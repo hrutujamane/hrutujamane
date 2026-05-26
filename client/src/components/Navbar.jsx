@@ -1,64 +1,118 @@
-import { Shield } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { 
+  User, LayoutDashboard, Flag, LogOut, 
+  ChevronDown, Settings, Shield, Bell 
+} from 'lucide-react';
 
-export default function Navbar() {
+const Navbar = () => {
+  // State to manage whether the dropdown is open or closed
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   return (
-    <nav
-      className="relative z-10 flex items-center justify-between px-6 py-4"
-      style={{ borderBottom: '1px solid rgba(59,130,246,0.1)' }}
-    >
-      {/* Logo */}
-      <div className="flex items-center gap-2">
-        <div className="relative">
-          {/* Colorful shield icon matching video */}
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M16 3L4 8v8c0 7 5.4 13.5 12 15 6.6-1.5 12-8 12-15V8L16 3z" fill="url(#shieldGrad)" />
-            <path d="M12 16l3 3 5-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <defs>
-              <linearGradient id="shieldGrad" x1="4" y1="3" x2="28" y2="30" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#f472b6" />
-                <stop offset="50%" stopColor="#a855f7" />
-                <stop offset="100%" stopColor="#3b82f6" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <span
-          className="text-xl font-bold tracking-tight"
-          style={{
-            background: 'linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}
+    <nav className="flex justify-between items-center px-8 py-4 bg-[#0a0f1d] border-b border-slate-800 sticky top-0 z-50">
+      
+      {/* 1. Left Side: InternShield Logo */}
+      {/* Look for the Link tag at the start of your nav */}
+{/* Look for the Link tag at the start of your nav */}
+<Link to="/home" className="flex items-center gap-2 group">
+  <div className="bg-purple-600 rounded-lg p-1.5 ...">
+    <Shield className="text-white" size={20} />
+  </div>
+  <span className="text-xl font-bold text-white tracking-tight">
+    Intern<span className="text-blue-400">Shield</span>
+  </span>
+</Link>
+
+      {/* 2. Right Side: Interactive Dropdown Menu */}
+      <div className="relative">
+        {/* The Clickable Button (Replaces "Sign In") */}
+        <button 
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-600 px-4 py-2 rounded-xl transition-all text-white font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/50"
         >
-          InternShield
-        </span>
-      </div>
+          <User size={18} className="text-blue-400" />
+          <span>My Account</span>
+          <ChevronDown 
+            className={`text-slate-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} 
+            size={16} 
+          />
+        </button>
 
-      {/* Nav links */}
-      <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
-        <a href="#" className="hover:text-white transition-colors">How it works</a>
-        <a href="#" className="hover:text-white transition-colors">Report a Scam</a>
-        <a href="#" className="hover:text-white transition-colors">About</a>
-      </div>
+        {/* The Dropdown Content */}
+        {isDropdownOpen && (
+          <div className="absolute right-0 mt-3 w-64 bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl py-2 z-50">
+            
+            {/* Added: User Info Header */}
+            <div className="px-4 py-3 mb-2 border-b border-slate-700 bg-slate-800/50">
+              <p className="text-sm font-bold text-white">Student User</p>
+              <p className="text-xs text-slate-400">student@university.edu</p>
+            </div>
 
-      {/* CTA */}
-      <button
-        className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
-        style={{
-          background: 'rgba(59,130,246,0.12)',
-          border: '1px solid rgba(59,130,246,0.3)',
-          color: '#60a5fa',
-        }}
-        onMouseEnter={e => {
-          e.currentTarget.style.background = 'rgba(59,130,246,0.22)';
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.background = 'rgba(59,130,246,0.12)';
-        }}
-      >
-        Sign In
-      </button>
+            {/* Core Links */}
+            <Link 
+              to="/dashboard" 
+              className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors"
+              onClick={() => setIsDropdownOpen(false)}
+            >
+              <LayoutDashboard size={18} className="text-blue-400" /> Command Dashboard
+            </Link>
+            
+            <Link 
+              to="/report" 
+              className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors"
+              onClick={() => setIsDropdownOpen(false)}
+            >
+              <Flag size={18} className="text-red-400" /> Report a Scam
+            </Link>
+            
+            <Link 
+              to="/account" 
+              className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors"
+              onClick={() => setIsDropdownOpen(false)}
+            >
+              <User size={18} className="text-emerald-400" /> Profile Settings
+            </Link>
+
+            {/* Added: Extra Features Section */}
+            <div className="border-t border-slate-700 my-2"></div>
+
+            <Link 
+              to="/notifications" 
+              className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors justify-between"
+              onClick={() => setIsDropdownOpen(false)}
+            >
+              <div className="flex items-center gap-3">
+                <Bell size={18} className="text-yellow-400" /> Alerts
+              </div>
+              <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3 New</span>
+            </Link>
+
+            <Link 
+              to="/settings" 
+              className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors"
+              onClick={() => setIsDropdownOpen(false)}
+            >
+              <Settings size={18} className="text-slate-400" /> App Preferences
+            </Link>
+
+            {/* Logout Section */}
+            <div className="border-t border-slate-700 my-2"></div>
+            
+            <button 
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors text-left"
+              onClick={() => {
+                setIsDropdownOpen(false);
+                console.log("User signed out");
+              }}
+            >
+              <LogOut size={18} /> Sign Out
+            </button>
+          </div>
+        )}
+      </div>
     </nav>
   );
-}
+};
+
+export default Navbar;

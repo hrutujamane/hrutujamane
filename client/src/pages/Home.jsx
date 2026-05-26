@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { UserCircle, ShieldCheck, Search, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import MeshBackground from '../components/MeshBackground';
 import AnalyzeForm from '../components/AnalyzeForm';
@@ -7,160 +9,118 @@ import ResultsCard from '../components/ResultsCard';
 import FeatureStrip from '../components/FeatureStrip';
 import { analyzeInternship } from '../api';
 
-// View states
-const VIEWS = {
-  FORM: 'form',
-  LOADING: 'loading',
-  RESULTS: 'results',
-  ERROR: 'error',
-};
-
 export default function Home() {
-  const [view, setView] = useState(VIEWS.FORM);
+  const [view, setView] = useState('form');
   const [result, setResult] = useState(null);
-  const [apiError, setApiError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (payload) => {
-    setApiError('');
-    setView(VIEWS.LOADING);
-
+    setView('loading');
     try {
       const data = await analyzeInternship(payload);
       setResult(data);
-      setView(VIEWS.RESULTS);
+      setView('results');
     } catch (err) {
-      const message =
-        err?.response?.data?.error ||
-        err?.message ||
-        'Something went wrong. Please try again.';
-      setApiError(message);
-      setView(VIEWS.ERROR);
+      setView('form');
     }
   };
 
-  const handleReset = () => {
-    setResult(null);
-    setApiError('');
-    setView(VIEWS.FORM);
-  };
-
   return (
-    <div className="relative min-h-screen flex flex-col">
+    <div className="relative min-h-screen flex flex-col bg-[#020617]">
       <MeshBackground />
 
       <div className="relative z-10 flex flex-col flex-1">
-        <Navbar />
+        {/* --- RESTORED NAVBAR WITH LOGO & ADMIN ICON --- */}
+        <nav className="flex justify-between items-center px-8 py-6 border-b border-white/5 bg-slate-950/20 backdrop-blur-md">
+          <div className="flex items-center gap-3">
+            {/* THE ORIGINAL LOGO */}
+            
+           
+          </div>
+          
+          
+        </nav>
 
-        <main className="flex-1 flex flex-col items-center px-4 py-8">
-          {/* ── Hero Text (shown except on results) ── */}
-          {view !== VIEWS.RESULTS && (
-            <div className="text-center mb-8 mt-4 fade-in">
-              {/* Logo */}
-              <div className="flex justify-center mb-4">
-                <svg width="52" height="52" viewBox="0 0 32 32" fill="none">
-                  <path
-                    d="M16 3L4 8v8c0 7 5.4 13.5 12 15 6.6-1.5 12-8 12-15V8L16 3z"
-                    fill="url(#shieldGrad2)"
-                  />
-                  <path
-                    d="M12 16l3 3 5-6"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="shieldGrad2"
-                      x1="4"
-                      y1="3"
-                      x2="28"
-                      y2="30"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0%" stopColor="#f472b6" />
-                      <stop offset="50%" stopColor="#a855f7" />
-                      <stop offset="100%" stopColor="#3b82f6" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-
-              <h1
-                className="text-4xl md:text-5xl font-extrabold mb-3 leading-tight"
+        <main className="flex-1 flex flex-col items-center px-4 py-12">
+          {/* HERO SECTION */}
+          {view !== 'results' && (
+            <div className="text-center mb-12 fade-in">
+              <h1 
+                className="text-5xl md:text-6xl font-black mb-6 tracking-tight"
                 style={{
                   background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #60a5fa 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  backgroundSize: '200% auto',
                 }}
               >
-                {view === VIEWS.LOADING ? 'Detect Fake Internships Instantly' : 'Detect Fake Internships Instantly'}
+                Detect Fake Internships Instantly
               </h1>
-
-              <p className="text-slate-400 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+              <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
                 Paste a listing or URL and our AI will scan it for scam signals, red flags, and
                 community reports in seconds.
               </p>
             </div>
           )}
 
-          {/* ── View Switcher ── */}
+          {/* ANALYZER COMPONENT */}
           <div className="w-full max-w-4xl">
-            {view === VIEWS.FORM && (
-              <AnalyzeForm onSubmit={handleSubmit} isLoading={false} />
+            {view === 'form' && (
+              <>
+                <AnalyzeForm onSubmit={handleSubmit} isLoading={false} />
+                <FeatureStrip />
+                
+                {/* HOW IT WORKS SECTION */}
+                <section id="how-it-works" className="py-20 px-6 border-t border-white/5 mt-16">
+                  <h2 className="text-3xl font-bold text-white mb-10 text-center">How InternShield Works</h2>
+                  <div className="grid md:grid-cols-3 gap-8 text-center">
+                    <div className="p-8 bg-white/5 rounded-3xl border border-white/10 hover:border-blue-500/30 transition-all">
+                      <div className="text-blue-400 text-sm font-bold mb-4 uppercase">Step 01</div>
+                      <h3 className="text-white font-bold text-xl mb-3">Data Ingestion</h3>
+                      <p className="text-slate-400 text-sm">Our AI scans the URL or text for common scam signatures.</p>
+                    </div>
+                    <div className="p-8 bg-white/5 rounded-3xl border border-white/10 hover:border-purple-500/30 transition-all">
+                      <div className="text-purple-400 text-sm font-bold mb-4 uppercase">Step 02</div>
+                      <h3 className="text-white font-bold text-xl mb-3">Pattern Analysis</h3>
+                      <p className="text-slate-400 text-sm">Cross-referencing known fraudulent company behaviors.</p>
+                    </div>
+                    <div className="p-8 bg-white/5 rounded-3xl border border-white/10 hover:border-pink-500/30 transition-all">
+                      <div className="text-pink-400 text-sm font-bold mb-4 uppercase">Step 03</div>
+                      <h3 className="text-white font-bold text-xl mb-3">Trust Rating</h3>
+                      <p className="text-slate-400 text-sm">Receive a risk score and identified red flags instantly.</p>
+                    </div>
+                  </div>
+                </section>
+              </>
             )}
 
-            {view === VIEWS.LOADING && (
-              <div className="flex justify-center">
-                <AnalyzingLoader />
-              </div>
-            )}
-
-            {view === VIEWS.RESULTS && result && (
-              <ResultsCard result={result} onReset={handleReset} />
-            )}
-
-            {view === VIEWS.ERROR && (
-              <div className="glass-card p-8 max-w-lg mx-auto text-center fade-in">
-                <div className="text-4xl mb-4">⚠️</div>
-                <h3 className="text-xl font-bold text-white mb-2">Analysis Failed</h3>
-                <p className="text-slate-400 text-sm mb-6">{apiError}</p>
-                <button className="btn-analyze mx-auto" onClick={handleReset}>
-                  Try Again
-                </button>
-              </div>
-            )}
+            {view === 'loading' && <AnalyzingLoader />}
+            {view === 'results' && result && <ResultsCard result={result} onReset={() => setView('form')} />}
           </div>
-
-          {/* ── Feature strip — only on form view ── */}
-          {view === VIEWS.FORM && <FeatureStrip />}
         </main>
 
-        {/* Footer */}
-        <footer className="text-center py-6 text-xs text-slate-600 border-t border-slate-800/40 relative z-10">
-          © {new Date().getFullYear()} InternShield — Protecting students from fake internships.
+        {/* TEAM NEXUS CONSOLIDATED FOOTER */}
+        <footer className="mt-auto py-12 border-t border-slate-800/40 relative z-10 text-center bg-slate-950/50">
+          <div className="max-w-4xl mx-auto px-4">
+            <h3 className="text-lg font-semibold text-blue-400 mb-2">Team NEXUS Help Desk</h3>
+            <p className="text-gray-400 text-sm mb-8">
+              Spotted a false positive or need to verify your company? Reach out to our engineering team.
+            </p>
+            <div className="flex flex-wrap justify-center gap-10 mb-8">
+              <div className="flex items-center gap-3">
+                <span className="text-blue-400 font-bold">📧</span>
+                <span className="text-gray-300 text-sm font-medium">nexus.support@aissms.edu.in</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-blue-400 font-bold">📍</span>
+                <span className="text-gray-300 text-sm font-medium">AISSMS COE, Pune</span>
+              </div>
+            </div>
+            <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">
+              © {new Date().getFullYear()} InternShield — Built with 💙 by Team NEXUS
+            </p>
+          </div>
         </footer>
       </div>
-      <section className="py-12 bg-gray-50">
-  <div className="max-w-4xl mx-auto px-4 text-center">
-    <h2 className="text-3xl font-bold text-gray-800 mb-4">Get in Touch</h2>
-    <p className="text-gray-600 mb-8">Have a question or found a scam? Let us know.</p>
-    
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-        <h3 className="font-semibold text-lg">Email Us</h3>
-        <p className="text-blue-600">support@internshield.com</p>
-      </div>
-      <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-        <h3 className="font-semibold text-lg">Report a Scam</h3>
-        <p className="text-blue-600">report@internshield.com</p>
-      </div>
     </div>
-  </div>
-</section>
-    </div>
-    
   );
 }
