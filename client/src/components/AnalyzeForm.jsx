@@ -14,6 +14,7 @@ export default function AnalyzeForm({ onSubmit, isLoading }) {
   const [jobTitle, setJobTitle] = useState('');
   const [listingText, setListingText] = useState('');
   const [listingUrl, setListingUrl] = useState('');
+  const [uploadedFileName, setUploadedFileName] = useState('');
   const [error, setError] = useState('');
   const fileInputRef = useRef(null);
 
@@ -39,12 +40,14 @@ export default function AnalyzeForm({ onSubmit, isLoading }) {
       jobTitle: jobTitle.trim(),
       listingText: activeTab === 'text' ? listingText.trim() : undefined,
       listingUrl: activeTab === 'url' ? listingUrl.trim() : undefined,
+      fileName: activeTab === 'text' ? uploadedFileName : undefined,
     });
   };
 
   const handlePdfUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    setUploadedFileName(file.name);
     // Read PDF as text via FileReader (basic extraction)
     const reader = new FileReader();
     reader.onload = () => {
@@ -136,7 +139,13 @@ export default function AnalyzeForm({ onSubmit, isLoading }) {
             style={{ minHeight: '180px' }}
             placeholder="Paste the full job description here... or upload a PDF above to auto-fill this field."
             value={listingText}
-            onChange={e => setListingText(e.target.value)}
+            onChange={e => {
+              const val = e.target.value;
+              setListingText(val);
+              if (!val.includes('[PDF:')) {
+                setUploadedFileName('');
+              }
+            }}
             disabled={isLoading}
           />
         </div>

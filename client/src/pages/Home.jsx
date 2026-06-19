@@ -26,12 +26,12 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-[#020617]">
+    <div className="relative min-h-screen flex flex-col transition-colors duration-300">
       <MeshBackground />
 
       <div className="relative z-10 flex flex-col flex-1">
         {/* --- RESTORED NAVBAR WITH LOGO & ADMIN ICON --- */}
-        <nav className="flex justify-between items-center px-8 py-6 border-b border-white/5 bg-slate-950/20 backdrop-blur-md">
+        <nav className="flex justify-between items-center px-8 py-6 border-b transition-colors duration-300" style={{ borderColor: 'var(--glass-border)', background: 'var(--nav-bg)' }}>
           <div className="flex items-center gap-3">
             {/* THE ORIGINAL LOGO */}
             
@@ -55,7 +55,7 @@ export default function Home() {
               >
                 Detect Fake Internships Instantly
               </h1>
-              <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+              <p style={{ color: 'var(--text-muted)' }} className="text-lg max-w-2xl mx-auto leading-relaxed">
                 Paste a listing or URL and our AI will scan it for scam signals, red flags, and
                 community reports in seconds.
               </p>
@@ -71,22 +71,22 @@ export default function Home() {
                 
                 {/* HOW IT WORKS SECTION */}
                 <section id="how-it-works" className="py-20 px-6 border-t border-white/5 mt-16">
-                  <h2 className="text-3xl font-bold text-white mb-10 text-center">How InternShield Works</h2>
+                  <h2 className="text-3xl font-bold mb-10 text-center transition-colors">How InplaSheild Works</h2>
                   <div className="grid md:grid-cols-3 gap-8 text-center">
                     <div className="p-8 bg-white/5 rounded-3xl border border-white/10 hover:border-blue-500/30 transition-all">
                       <div className="text-blue-400 text-sm font-bold mb-4 uppercase">Step 01</div>
-                      <h3 className="text-white font-bold text-xl mb-3">Data Ingestion</h3>
-                      <p className="text-slate-400 text-sm">Our AI scans the URL or text for common scam signatures.</p>
+                      <h3 className="font-bold text-xl mb-3">Data Ingestion</h3>
+                      <p style={{ color: 'var(--text-muted)' }} className="text-sm">Our AI scans the URL or text for common scam signatures.</p>
                     </div>
                     <div className="p-8 bg-white/5 rounded-3xl border border-white/10 hover:border-purple-500/30 transition-all">
                       <div className="text-purple-400 text-sm font-bold mb-4 uppercase">Step 02</div>
-                      <h3 className="text-white font-bold text-xl mb-3">Pattern Analysis</h3>
-                      <p className="text-slate-400 text-sm">Cross-referencing known fraudulent company behaviors.</p>
+                      <h3 className="font-bold text-xl mb-3">Pattern Analysis</h3>
+                      <p style={{ color: 'var(--text-muted)' }} className="text-sm">Cross-referencing known fraudulent company behaviors.</p>
                     </div>
                     <div className="p-8 bg-white/5 rounded-3xl border border-white/10 hover:border-pink-500/30 transition-all">
                       <div className="text-pink-400 text-sm font-bold mb-4 uppercase">Step 03</div>
-                      <h3 className="text-white font-bold text-xl mb-3">Trust Rating</h3>
-                      <p className="text-slate-400 text-sm">Receive a risk score and identified red flags instantly.</p>
+                      <h3 className="font-bold text-xl mb-3">Trust Rating</h3>
+                      <p style={{ color: 'var(--text-muted)' }} className="text-sm">Receive a risk score and identified red flags instantly.</p>
                     </div>
                   </div>
                 </section>
@@ -108,15 +108,15 @@ export default function Home() {
             <div className="flex flex-wrap justify-center gap-10 mb-8">
               <div className="flex items-center gap-3">
                 <span className="text-blue-400 font-bold">📧</span>
-                <span className="text-gray-300 text-sm font-medium">nexus.support@aissms.edu.in</span>
+                <span className="text-gray-300 text-sm font-medium">nexus.support@sitrc.edu.in</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-blue-400 font-bold">📍</span>
-                <span className="text-gray-300 text-sm font-medium">AISSMS COE, Pune</span>
+                <span className="text-gray-300 text-sm font-medium">SITRC, Nashik</span>
               </div>
             </div>
             <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">
-              © {new Date().getFullYear()} InternShield — Built with 💙 by Team NEXUS
+              © {new Date().getFullYear()} InplaSheild — Built with 💙 by Team NEXUS
             </p>
           </div>
         </footer>
