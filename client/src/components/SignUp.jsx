@@ -19,6 +19,16 @@ export default function SignUp() {
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
+  const getErrorMessage = (error, defaultMsg) => {
+    if (error.response && error.response.data && typeof error.response.data === 'object' && error.response.data.message) {
+      return error.response.data.message;
+    }
+    if (error.response && error.response.status === 404) {
+      return "API endpoint not found. Make sure VITE_API_URL is configured correctly.";
+    }
+    return error.message || defaultMsg;
+  };
+
   // Handle OTP requests calling backend api
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -34,7 +44,7 @@ export default function SignUp() {
         setOtpSent(true);
       }
     } catch (error) {
-      setErrorMsg(error.response?.data?.message || error.message || 'Failed to send OTP.');
+      setErrorMsg(getErrorMessage(error, 'Failed to send OTP.'));
     }
   };
 
@@ -55,7 +65,7 @@ export default function SignUp() {
           navigate('/');
         }
       } catch (error) {
-        setErrorMsg(error.response?.data?.message || error.message || "Registration failed");
+        setErrorMsg(getErrorMessage(error, 'Registration failed'));
       }
       return;
     }
@@ -71,7 +81,7 @@ export default function SignUp() {
         navigate('/');
       }
     } catch (error) {
-      setErrorMsg(error.response?.data?.message || error.message || "Registration failed");
+      setErrorMsg(getErrorMessage(error, 'Registration failed'));
     }
   };
 

@@ -30,6 +30,16 @@ export default function SignIn() {
     }
   }, [navigate]);
 
+  const getErrorMessage = (error, defaultMsg) => {
+    if (error.response && error.response.data && typeof error.response.data === 'object' && error.response.data.message) {
+      return error.response.data.message;
+    }
+    if (error.response && error.response.status === 404) {
+      return "API endpoint not found. Make sure VITE_API_URL is configured correctly.";
+    }
+    return error.message || defaultMsg;
+  };
+
   // Mobile verification request calling backend api
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -45,7 +55,7 @@ export default function SignIn() {
         setOtpSent(true);
       }
     } catch (error) {
-      setErrorMsg(error.response?.data?.message || error.message || 'Failed to send OTP.');
+      setErrorMsg(getErrorMessage(error, 'Failed to send OTP.'));
     }
   };
 
@@ -65,8 +75,7 @@ export default function SignIn() {
           navigate('/home');
         }
       } catch (error) {
-        const message = error.response?.data?.message || 'Verification failed. Try OTP 1234';
-        setErrorMsg(message);
+        setErrorMsg(getErrorMessage(error, 'Verification failed. Try OTP 1234'));
       }
       return;
     }
@@ -87,12 +96,7 @@ export default function SignIn() {
         }
       }
     } catch (error) {
-      if (!error.response) {
-        setErrorMsg('Cannot reach the server. Make sure the backend node process is running.');
-        return;
-      }
-      const message = error.response?.data?.message || 'Invalid email or password.';
-      setErrorMsg(message);
+      setErrorMsg(getErrorMessage(error, 'Invalid email or password.'));
     }
   };
 
