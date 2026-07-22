@@ -78,6 +78,16 @@
       "mobile": "",
       "role": "student",
       "section": "internship"
+    },
+    {
+      "id": "1784717625868",
+      "createdAt": "2026-07-22T10:53:45.868Z",
+      "name": "hrutujatest",
+      "email": "test@gmail.com",
+      "password": "$2b$10$48FaR3t3leqHf.zLhfSwJOpr6PUYAg9qvzA2JFEMADrvrdHV/TxDq",
+      "mobile": "",
+      "role": "student",
+      "section": "internship"
     }
   ],
   "activities": [
