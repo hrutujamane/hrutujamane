@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getUser } from '../utils/auth';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api',
   timeout: 60000, // AI can take a while
   headers: { 'Content-Type': 'application/json' },
 });

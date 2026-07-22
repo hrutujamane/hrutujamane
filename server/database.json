@@ -88,6 +88,36 @@
       "mobile": "",
       "role": "student",
       "section": "internship"
+    },
+    {
+      "id": "1784719577800",
+      "createdAt": "2026-07-22T11:26:17.800Z",
+      "name": "Mobile Verification Test User",
+      "email": "9876543210@inplasheild.com",
+      "password": "$2b$10$RCNouUkh8MEWDbLUHxoaKuamE9.Mv.TLGDo8X4wHO7q7QJjh6.2.e",
+      "mobile": "9876543210",
+      "role": "student",
+      "section": "placement"
+    },
+    {
+      "id": "1784719964443",
+      "createdAt": "2026-07-22T11:32:44.444Z",
+      "name": "Dynamic OTP Test User",
+      "email": "6342844123@inplasheild.com",
+      "password": "$2b$10$ndTQDEiaduz5pZKy3UWFBOXCM9seMgM8dlwBK8cxcRNBZ1ET9d15O",
+      "mobile": "6342844123",
+      "role": "student",
+      "section": "placement"
+    },
+    {
+      "id": "1784720084718",
+      "createdAt": "2026-07-22T11:34:44.718Z",
+      "name": "hrutuja",
+      "email": "8668492826@inplasheild.com",
+      "password": "$2b$10$ZCTspQ8lHRh0O5pTlX/c3.3pRTDS2aYZh6LZT5uhX6YQhXMnqZKvq",
+      "mobile": "8668492826",
+      "role": "student",
+      "section": "internship"
     }
   ],
   "activities": [

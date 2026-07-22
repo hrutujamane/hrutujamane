@@ -19,15 +19,22 @@ export default function SignUp() {
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
-  // Handle mock OTP requests
-  const handleSendOtp = (e) => {
+  // Handle OTP requests calling backend api
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     setErrorMsg('');
-    if (formData.mobile?.length >= 10) {
-      alert(`OTP sent to ${formData.mobile}`);
-      setOtpSent(true);
-    } else {
+    if (!formData.mobile || formData.mobile.length < 10) {
       setErrorMsg('Please enter a valid mobile number');
+      return;
+    }
+    try {
+      const response = await axios.post('/api/auth/send-otp', { mobile: formData.mobile, checkExists: false });
+      if (response.data.success) {
+        alert(response.data.message);
+        setOtpSent(true);
+      }
+    } catch (error) {
+      setErrorMsg(error.response?.data?.message || error.message || 'Failed to send OTP.');
     }
   };
 
@@ -36,11 +43,19 @@ export default function SignUp() {
     e.preventDefault();
     setErrorMsg('');
     if (signupMethod === 'mobile') {
-      if (otp === '1234') {
-        alert("Account Created! Please Sign In.");
-        navigate('/');
-      } else {
-        setErrorMsg("Invalid OTP! Try 1234");
+      try {
+        const response = await axios.post('/api/register-mobile', {
+          name: formData.name,
+          mobile: formData.mobile,
+          otp,
+          section,
+        });
+        if (response.data.success) {
+          alert("Account Created! Please Sign In.");
+          navigate('/');
+        }
+      } catch (error) {
+        setErrorMsg(error.response?.data?.message || error.message || "Registration failed");
       }
       return;
     }

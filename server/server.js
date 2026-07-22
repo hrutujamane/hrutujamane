@@ -17,6 +17,44 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
+// Temporary in-memory OTP verification store (mobile -> { otp, expiresAt })
+const otpStore = new Map();
+
+// Helper to send SMS via Twilio using Axios
+const axios = require('axios');
+async function sendTwilioSMS(to, body) {
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const fromNumber = process.env.TWILIO_PHONE_NUMBER;
+
+  if (!accountSid || !authToken || !fromNumber) {
+    throw new Error('Twilio credentials missing in environment variables');
+  }
+
+  let formattedTo = to.trim();
+  if (!formattedTo.startsWith('+')) {
+    // Default to +91 (India) country code if not specified
+    formattedTo = `+91${formattedTo}`;
+  }
+
+  const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+  const auth = Buffer.from(`${accountSid}:${authToken}`).toString('base64');
+  
+  const params = new URLSearchParams();
+  params.append('To', formattedTo);
+  params.append('From', fromNumber);
+  params.append('Body', body);
+
+  const response = await axios.post(url, params, {
+    headers: {
+      'Authorization': `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  });
+
+  return response.data;
+}
+
 const DB_FILE = path.join(__dirname, 'database.json');
 let useMongo = false;
 
@@ -122,6 +160,9 @@ async function findOneUser(query) {
     const db = readDB();
     if (query.email) {
       return db.users.find(u => u.email === query.email.toLowerCase()) || null;
+    }
+    if (query.mobile) {
+      return db.users.find(u => u.mobile === query.mobile) || null;
     }
     if (query._id) {
       return db.users.find(u => u.id === query._id) || null;
@@ -408,6 +449,138 @@ app.post('/api/login', async (req, res) => {
       success: true,
       user: sanitizeUser(user),
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.post('/api/auth/send-otp', async (req, res) => {
+  try {
+    const { mobile, checkExists } = req.body;
+    if (!mobile || mobile.length < 10) {
+      return res.status(400).json({ success: false, message: 'Please enter a valid mobile number' });
+    }
+    const user = await findOneUser({ mobile });
+    if (checkExists && !user) {
+      return res.status(404).json({ success: false, message: 'Mobile number not registered' });
+    }
+    if (!checkExists && user) {
+      return res.status(400).json({ success: false, message: 'Mobile number already registered' });
+    }
+
+    // Generate random 6-digit verification code
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes validity
+
+    const twilioConfigured = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER;
+
+    if (twilioConfigured) {
+      try {
+        await sendTwilioSMS(mobile, `Your InplaShield verification code is ${otp}. Expiry: 5 mins.`);
+        otpStore.set(mobile, { otp, expiresAt });
+        console.log(`[SMS OTP] Sent verification code ${otp} to ${mobile}`);
+        res.json({ success: true, message: 'Verification code sent to your mobile phone' });
+      } catch (err) {
+        console.error('Failed to send Twilio SMS:', err.message);
+        return res.status(500).json({ success: false, message: `Failed to send SMS: ${err.message}` });
+      }
+    } else {
+      // Fallback to mock 1234
+      const fallbackOtp = '1234';
+      otpStore.set(mobile, { otp: fallbackOtp, expiresAt });
+      console.warn(`[SMS OTP] Twilio not configured. Fallback code for ${mobile}: ${fallbackOtp}`);
+      res.json({ success: true, message: 'Verification code sent (Twilio not configured, use 1234)' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.post('/api/login-mobile', async (req, res) => {
+  try {
+    const { mobile, otp, section } = req.body;
+    if (!mobile || !otp) {
+      return res.status(400).json({ success: false, message: 'Mobile number and verification code are required' });
+    }
+
+    const stored = otpStore.get(mobile);
+    if (!stored) {
+      return res.status(400).json({ success: false, message: 'Verification code expired or not requested yet' });
+    }
+    if (Date.now() > stored.expiresAt) {
+      otpStore.delete(mobile);
+      return res.status(400).json({ success: false, message: 'Verification code expired' });
+    }
+    if (otp !== stored.otp) {
+      return res.status(400).json({ success: false, message: 'Invalid verification code' });
+    }
+
+    // OTP verified successfully - consume it
+    otpStore.delete(mobile);
+
+    const user = await findOneUser({ mobile });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Mobile number not registered' });
+    }
+    if (section && (section === 'internship' || section === 'placement')) {
+      await updateUserSection(user.email, section);
+    }
+    res.json({
+      success: true,
+      user: sanitizeUser(user),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.post('/api/register-mobile', async (req, res) => {
+  try {
+    const { name, mobile, otp, section } = req.body;
+    if (!name || !mobile || !otp) {
+      return res.status(400).json({ success: false, message: 'Name, mobile, and verification code are required' });
+    }
+
+    const stored = otpStore.get(mobile);
+    if (!stored) {
+      return res.status(400).json({ success: false, message: 'Verification code expired or not requested yet' });
+    }
+    if (Date.now() > stored.expiresAt) {
+      otpStore.delete(mobile);
+      return res.status(400).json({ success: false, message: 'Verification code expired' });
+    }
+    if (otp !== stored.otp) {
+      return res.status(400).json({ success: false, message: 'Invalid verification code' });
+    }
+
+    // OTP verified successfully - consume it
+    otpStore.delete(mobile);
+
+    const existingUser = await findOneUser({ mobile });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'Mobile number already registered' });
+    }
+
+    const dummyEmail = `${mobile}@inplasheild.com`;
+    const emailExists = await findOneUser({ email: dummyEmail });
+    if (emailExists) {
+      return res.status(400).json({ success: false, message: 'User with this mobile identifier already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash('mobile_user_password', 10);
+    const newUser = await createUser({
+      name,
+      email: dummyEmail,
+      password: hashedPassword,
+      mobile,
+      role: 'student',
+      section: section || 'internship'
+    });
+
+    res.json({ success: true, message: 'User created successfully', user: sanitizeUser(newUser) });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Server error' });

@@ -30,15 +30,22 @@ export default function SignIn() {
     }
   }, [navigate]);
 
-  // Mock mobile verification request
-  const handleSendOtp = (e) => {
+  // Mobile verification request calling backend api
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     setErrorMsg('');
-    if (mobile.length >= 10) {
-      alert(`OTP sent to ${mobile}`);
-      setOtpSent(true);
-    } else {
+    if (mobile.length < 10) {
       setErrorMsg('Please enter a valid mobile number');
+      return;
+    }
+    try {
+      const response = await axios.post('/api/auth/send-otp', { mobile, checkExists: true });
+      if (response.data.success) {
+        alert(response.data.message);
+        setOtpSent(true);
+      }
+    } catch (error) {
+      setErrorMsg(error.response?.data?.message || error.message || 'Failed to send OTP.');
     }
   };
 
@@ -47,10 +54,19 @@ export default function SignIn() {
     e.preventDefault();
     setErrorMsg('');
     if (loginMethod === 'mobile') {
-      if (otp === '1234') {
-        setErrorMsg('Mobile sign-in is not fully set up yet. Please use email and password.');
-      } else {
-        setErrorMsg("Invalid OTP! Try 1234");
+      try {
+        const response = await axios.post('/api/login-mobile', {
+          mobile,
+          otp,
+          section,
+        });
+        if (response.data.success) {
+          saveUser(response.data.user);
+          navigate('/home');
+        }
+      } catch (error) {
+        const message = error.response?.data?.message || 'Verification failed. Try OTP 1234';
+        setErrorMsg(message);
       }
       return;
     }
