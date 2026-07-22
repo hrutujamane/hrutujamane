@@ -1,37 +1,56 @@
-import { useEffect, useState } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { Terminal, Shield, RefreshCw } from 'lucide-react';
+import { getUser } from '../utils/auth';
 
-const STEPS = [
-  { id: 'extract', label: 'Extracting data...', icon: '🔍', durationMs: 2500 },
-  { id: 'analyze', label: 'Analyzing content...', icon: '🧠', durationMs: 3000 },
-  { id: 'community', label: 'Checking community reports...', icon: '🌐', durationMs: 2000 },
-  { id: 'score', label: 'Generating trust score...', icon: '📊', durationMs: 2500 },
+// Simulated step-by-step diagnostic audit log messages
+const LOG_MESSAGES = [
+  { text: 'Initializing scanner subsystem...', type: 'info', delay: 200 },
+  { text: 'Establishing secure request tunnel...', type: 'info', delay: 600 },
+  { text: 'API Gateway status: CONNECTED', type: 'success', delay: 1000 },
+  { text: 'Extracting listing text buffer...', type: 'info', delay: 1500 },
+  { text: 'Detecting document language & encoding: UTF-8', type: 'info', delay: 1800 },
+  { text: 'Running heuristic scanning rules...', type: 'info', delay: 2200 },
+  { text: 'RULE_01 [Upfront Fees]: Scanning description keywords...', type: 'info', delay: 2600 },
+  { text: 'RULE_02 [Impersonation]: Checking domain records...', type: 'info', delay: 3000 },
+  { text: 'RULE_03 [Urgency]: Checking direct selection indicators...', type: 'info', delay: 3400 },
+  { text: 'Scanning complete. Found potential red flags...', type: 'warn', delay: 4200 },
+  { text: 'Querying local database reports for matches...', type: 'info', delay: 4800 },
+  { text: 'Comparing target with reported scam profiles...', type: 'info', delay: 5300 },
+  { text: 'Found 0 direct domain blacklist matches', type: 'success', delay: 5800 },
+  { text: 'Evaluating community warning thresholds...', type: 'info', delay: 6400 },
+  { text: 'Computing final risk coefficients...', type: 'info', delay: 7000 },
+  { text: 'Applying trust score weight matrix...', type: 'info', delay: 7600 },
+  { text: 'Rendering safety assessment report card...', type: 'success', delay: 8200 },
+  { text: 'Redirection to audit reports...', type: 'success', delay: 8800 }
 ];
 
 export default function AnalyzingLoader() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [logs, setLogs] = useState([]);
   const [progress, setProgress] = useState(0);
+  const consoleEndRef = useRef(null);
+  
+  const user = getUser();
+  const isPlacement = user?.section === 'placement';
 
-  // Advance steps over time
+  // Output logs step-by-step
   useEffect(() => {
     const timers = [];
-    let elapsed = 0;
-
-    STEPS.forEach((step, i) => {
+    
+    LOG_MESSAGES.forEach((msg) => {
       const t = setTimeout(() => {
-        setCurrentStep(i);
-      }, elapsed);
+        const timeStr = new Date().toLocaleTimeString().split(' ')[0];
+        setLogs((prev) => [...prev, { ...msg, timestamp: timeStr }]);
+      }, msg.delay);
       timers.push(t);
-      elapsed += step.durationMs;
     });
 
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Animate progress bar smoothly
+  // Update progress bar percentage
   useEffect(() => {
     let start = null;
-    const totalDuration = STEPS.reduce((s, st) => s + st.durationMs, 0);
+    const totalDuration = 9000;
 
     const animate = (ts) => {
       if (!start) start = ts;
@@ -45,59 +64,73 @@ export default function AnalyzingLoader() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  const getStepState = (idx) => {
-    if (idx < currentStep) return 'done';
-    if (idx === currentStep) return 'active';
-    return 'pending';
-  };
+  // Autoscroll terminal shell
+  useEffect(() => {
+    consoleEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [logs]);
 
   return (
-    <div className="glass-card p-8 w-full max-w-xl mx-auto shadow-2xl fade-in">
-      <h2 className="text-2xl font-bold text-center text-white mb-1">
-        Analyzing Internship
-      </h2>
-      <p className="text-center text-slate-400 text-sm mb-8">
-        Our AI is scanning this listing for you...
-      </p>
-
-      {/* Progress Bar */}
-      <div className="mb-6">
-        <div className="flex justify-between text-xs text-slate-400 mb-2">
-          <span>Progress</span>
-          <span className="font-semibold text-blue-400">{progress}%</span>
+    <div className="w-full max-w-2xl mx-auto space-y-6 animate-fade-in">
+      <div className="text-center">
+        <div className="inline-flex items-center justify-center p-3.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 mb-4 animate-spin" style={{ animationDuration: '3s' }}>
+          <RefreshCw size={24} />
         </div>
-        <div className="progress-bar">
+        <h2 className="text-xl font-bold text-slate-100">
+          {isPlacement ? 'Auditing Placement Contract' : 'Auditing Internship Listing'}
+        </h2>
+        <p className="text-xs text-slate-400 mt-1">Please stand by. Evaluating risk parameters...</p>
+      </div>
+
+      {/* Progress Card */}
+      <div className="premium-card p-5 border border-white/[0.04] bg-[#0c0c12]/40">
+        <div className="flex justify-between items-center text-xs text-slate-400 mb-2.5">
+          <span className="font-semibold">Analysis Progress</span>
+          <span className="font-mono text-blue-400 font-bold">{progress}%</span>
+        </div>
+        <div className="h-2 bg-slate-900 border border-white/[0.05] rounded-full overflow-hidden">
           <div
-            className="progress-fill"
+            className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
-      {/* Steps */}
-      <div className="flex flex-col gap-3">
-        {STEPS.map((step, idx) => {
-          const state = getStepState(idx);
-          return (
-            <div key={step.id} className={`step-row ${state}`}>
-              <span className="text-xl" style={{ opacity: state === 'pending' ? 0.4 : 1 }}>
-                {step.icon}
+      {/* Monospace Console Stream */}
+      <div className="console-container border border-white/[0.06]">
+        <div className="console-header bg-slate-950/60 px-4 py-2 text-xs flex justify-between items-center text-slate-400">
+          <div className="flex items-center gap-2">
+            <Terminal size={12} className="text-blue-500" />
+            <span className="font-mono font-bold uppercase tracking-wider text-slate-300">security_logs_stream.sh</span>
+          </div>
+          <div className="flex items-center gap-1.5 font-mono text-[10px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>HEURISTIC ENGINE ACTIVE</span>
+          </div>
+        </div>
+        
+        <div className="console-body h-64 font-mono text-xs overflow-y-auto bg-slate-950/80 p-4 space-y-2">
+          {logs.map((log, idx) => (
+            <div key={idx} className="flex gap-2.5 items-start">
+              <span className="text-slate-600 select-none">[{log.timestamp}]</span>
+              <span className={`font-bold ${
+                log.type === 'success' ? 'text-emerald-400' :
+                log.type === 'warn' ? 'text-amber-400' :
+                log.type === 'error' ? 'text-red-400' : 'text-blue-400'
+              }`}>
+                [{log.type.toUpperCase()}]
               </span>
-              <span
-                className="flex-1 text-sm font-medium"
-                style={{ color: state === 'pending' ? 'rgba(148,163,184,0.5)' : '#e2e8f0' }}
-              >
-                {step.label}
-              </span>
-              {state === 'done' && (
-                <CheckCircle2 size={18} className="text-green-400" />
-              )}
-              {state === 'active' && (
-                <div className="spinner" />
-              )}
+              <span className="text-slate-300">{log.text}</span>
             </div>
-          );
-        })}
+          ))}
+          {logs.length < LOG_MESSAGES.length && (
+            <div className="flex gap-2.5 items-center text-blue-400/80 animate-pulse">
+              <span className="text-slate-600 select-none">[..:..:..]</span>
+              <span className="font-bold">[RUNNING]</span>
+              <span className="cursor-blink">Evaluating rules</span>
+            </div>
+          )}
+          <div ref={consoleEndRef} />
+        </div>
       </div>
     </div>
   );

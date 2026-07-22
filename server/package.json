@@ -17,6 +17,7 @@
     "express-rate-limit": "^7.1.5",
     "mongoose": "^8.0.0",
     "node-fetch": "^3.3.2",
+    "pdf-parse": "^2.4.5",
     "sequelize": "^6.37.8",
     "sqlite3": "^6.0.1"
   },

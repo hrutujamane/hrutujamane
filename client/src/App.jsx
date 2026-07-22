@@ -1,20 +1,20 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar'; // Make sure this path is correct!
-import SignIn from './pages/SignIn'; 
-import SignUp from './pages/SignUp'; 
-import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
-import Report from './pages/Report';
-import Settings from './pages/Settings';
-import Alerts from './pages/Alerts';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import Navbar from "./components/Navbar";
+import SignIn from "./pages/SignIn";
+import SignUp from "./components/SignUp";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import Report from "./pages/Report";
+import Settings from "./pages/Settings";
+import Alerts from "./pages/Alerts";
+
+const AUTH_ROUTES = ['/', '/signup'];
 
 function App() {
   return (
     <div className="min-h-screen transition-colors duration-300">
-      {/* Navbar goes here so it shows on every page */}
-      <Navbar /> 
-      
+      <Navbar />
+
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

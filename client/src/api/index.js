@@ -1,10 +1,24 @@
 import axios from 'axios';
+import { getUser } from '../utils/auth';
 
 const api = axios.create({
   baseURL: '/api',
   timeout: 60000, // AI can take a while
   headers: { 'Content-Type': 'application/json' },
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const user = getUser();
+    if (user && user.email) {
+      config.headers['x-user-email'] = user.email;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 /**
  * Submit an internship listing for AI analysis

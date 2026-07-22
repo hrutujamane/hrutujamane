@@ -1,5 +1,85 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "admin-1",
+      "name": "Rutuja",
+      "email": "admin@inplasheild.com",
+      "password": "$2b$10$0eAS380SLWrkqHJJNPdYgOEPV/mZsKCkGOmcegpZ7v721iGVyXQnm",
+      "role": "admin",
+      "section": "internship",
+      "createdAt": "2026-06-19T12:00:00.000Z"
+    },
+    {
+      "id": "1781873242517",
+      "name": "Hrutuja Mane",
+      "email": "hrutujamane492@gmail.com",
+      "password": "$2b$10$f2NF9AKp0BuyiiSeOIekcOpaop0RJzCJjDx.nptKVIJ1Jfqao2BVW",
+      "mobile": "",
+      "role": "student",
+      "section": "internship",
+      "createdAt": "2026-06-19T12:47:22.517Z"
+    },
+    {
+      "id": "1781874819035",
+      "name": "pvtxyz",
+      "email": "xyz@test.com",
+      "password": "$2b$10$Abm2eqbdUVBFtJZjPThFauG2tsvzRu6r9rnNIV3RkxRiZyLRwHdGO",
+      "mobile": "",
+      "role": "student",
+      "section": "internship",
+      "createdAt": "2026-06-19T13:13:39.035Z"
+    },
+    {
+      "id": "1783060506630",
+      "name": "Verify Student",
+      "email": "verifystudent@gmail.com",
+      "password": "$2b$10$4DVt6cOgqqJSLTs1wrFr/uyx0t.0XKUdprcmPwwaWXb530PP/NEnK",
+      "mobile": "",
+      "role": "student",
+      "section": "internship",
+      "createdAt": "2026-07-03T06:35:06.630Z"
+    },
+    {
+      "id": "1783779759510",
+      "createdAt": "2026-07-11T14:22:39.510Z",
+      "name": "shagun ",
+      "email": "shagun@test.com",
+      "password": "$2b$10$f.N1W/VqjcUcOsqBl2U3JuYCbRl5PDUzjtG/TuPbgFmJplXhhwmRi",
+      "mobile": "",
+      "role": "student",
+      "section": "internship"
+    },
+    {
+      "id": "1784033721711",
+      "createdAt": "2026-07-14T12:55:21.711Z",
+      "name": "shrutika ",
+      "email": "shru@test.com",
+      "password": "$2b$10$v6KVn8b70t.FUdOpYupFC.LVAtt7UOkwQX2ufXkJHaE2O1V31E5Ae",
+      "mobile": "",
+      "role": "student",
+      "section": "internship"
+    },
+    {
+      "id": "1784307289487",
+      "createdAt": "2026-07-17T16:54:49.487Z",
+      "name": "Shrutika ",
+      "email": "shrutikaambi63@gmail.com",
+      "password": "$2b$10$Szu5J1ABrPhPKRWGQwBN9O5iCsC4zWaedCilZNknbmeOb.oPvekrK",
+      "mobile": "",
+      "role": "student",
+      "section": "placement"
+    },
+    {
+      "id": "1784307549628",
+      "createdAt": "2026-07-17T16:59:09.628Z",
+      "name": "sharvil phale",
+      "email": "phalesharvil@gmail.com",
+      "password": "$2b$10$ozICujCpbMeGAW8S1DxqtuyvGagSfMsRHyhQAvuFTWAys5fdOvYuS",
+      "mobile": "",
+      "role": "student",
+      "section": "internship"
+    }
+  ],
   "activities": [
     {
       "id": "1781855659672",
@@ -26,6 +106,237 @@
       "url": null,
       "fileName": "Offer Letter of Data Science.pdf",
       "timestamp": 1781859483029
+    },
+    {
+      "id": "1781868949282",
+      "date": "19/6/2026",
+      "time": "5:05:49 pm",
+      "type": "scan",
+      "url": null,
+      "fileName": "test_internship.pdf",
+      "timestamp": 1781868949413
+    },
+    {
+      "id": "1781876220399",
+      "date": "19/6/2026",
+      "time": "7:07:00 pm",
+      "type": "url",
+      "url": "https://www.google.com/",
+      "fileName": null,
+      "timestamp": 1781876220433
+    },
+    {
+      "id": "1781876552326",
+      "date": "19/6/2026",
+      "time": "7:12:32 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "Offer Letter of Data Science.pdf",
+      "timestamp": 1781876552361
+    },
+    {
+      "id": "1781876607353",
+      "date": "19/6/2026",
+      "time": "7:13:27 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "pdf&rendition=1.pdf",
+      "timestamp": 1781876607353
+    },
+    {
+      "id": "1781876985345",
+      "date": "19/6/2026",
+      "time": "7:19:45 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "pdf&rendition=1.pdf",
+      "timestamp": 1781876985395
+    },
+    {
+      "id": "1781877017931",
+      "date": "19/6/2026",
+      "time": "7:20:17 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "pdf&rendition=1.pdf",
+      "timestamp": 1781877017931
+    },
+    {
+      "id": "1781877136567",
+      "date": "19/6/2026",
+      "time": "7:22:16 pm",
+      "type": "text",
+      "url": null,
+      "fileName": null,
+      "timestamp": 1781877136567
+    },
+    {
+      "id": "1781877492902",
+      "date": "19/6/2026",
+      "time": "7:28:12 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "pdf&rendition=1.pdf",
+      "timestamp": 1781877492954
+    },
+    {
+      "id": "1781877530173",
+      "date": "19/6/2026",
+      "time": "7:28:50 pm",
+      "type": "text",
+      "url": null,
+      "fileName": null,
+      "timestamp": 1781877530173
+    },
+    {
+      "id": "1781879243713",
+      "date": "19/6/2026",
+      "time": "7:57:23 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "pdf&rendition=1.pdf",
+      "timestamp": 1781879243811
+    },
+    {
+      "id": "1781879371592",
+      "date": "19/6/2026",
+      "time": "7:59:31 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "Assignment -3(25-26).pdf",
+      "timestamp": 1781879371665
+    },
+    {
+      "id": "1783060632252",
+      "date": "3/7/2026",
+      "time": "12:07:12 pm",
+      "type": "text",
+      "url": null,
+      "fileName": null,
+      "timestamp": 1783060632337,
+      "userEmail": "verifystudent@gmail.com",
+      "verdict": "suspicious",
+      "score": 60
+    },
+    {
+      "id": "1783061385543",
+      "date": "3/7/2026",
+      "time": "12:19:45 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "offer letter of AI.pdf",
+      "timestamp": 1783061385666,
+      "userEmail": "admin@inplasheild.com",
+      "verdict": "safe",
+      "score": 100
+    },
+    {
+      "id": "1783061407072",
+      "date": "3/7/2026",
+      "time": "12:20:07 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "Offer Letter of Data Science.pdf",
+      "timestamp": 1783061407072,
+      "userEmail": "admin@inplasheild.com",
+      "verdict": "safe",
+      "score": 100
+    },
+    {
+      "id": "1783061452476",
+      "date": "3/7/2026",
+      "time": "12:20:52 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "test_internship.pdf",
+      "timestamp": 1783061452476,
+      "userEmail": "admin@inplasheild.com",
+      "verdict": "suspicious",
+      "score": 60
+    },
+    {
+      "id": "1783965236295",
+      "timestamp": 1783965236296,
+      "date": "13/7/2026",
+      "time": "11:23:56 pm",
+      "type": "text",
+      "url": null,
+      "fileName": null,
+      "userEmail": "shagun@test.com",
+      "verdict": "safe",
+      "score": 100
+    },
+    {
+      "id": "1783965286963",
+      "timestamp": 1783965286963,
+      "date": "13/7/2026",
+      "time": "11:24:46 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "NA assignment 3.pdf",
+      "userEmail": "shagun@test.com",
+      "verdict": "safe",
+      "score": 100
+    },
+    {
+      "id": "1783965378543",
+      "timestamp": 1783965378543,
+      "date": "13/7/2026",
+      "time": "11:26:18 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "offer letter of AI.pdf",
+      "userEmail": "shagun@test.com",
+      "verdict": "safe",
+      "score": 100
+    },
+    {
+      "id": "1783965755324",
+      "timestamp": 1783965755325,
+      "date": "13/7/2026",
+      "time": "11:32:35 pm",
+      "type": "text",
+      "url": null,
+      "fileName": null,
+      "userEmail": "shagun@test.com",
+      "verdict": "safe",
+      "score": 100
+    },
+    {
+      "id": "1783965812424",
+      "timestamp": 1783965812424,
+      "date": "13/7/2026",
+      "time": "11:33:32 pm",
+      "type": "text",
+      "url": null,
+      "fileName": null,
+      "userEmail": "shagun@test.com",
+      "verdict": "suspicious",
+      "score": 60
+    },
+    {
+      "id": "1783966256583",
+      "timestamp": 1783966256583,
+      "date": "13/7/2026",
+      "time": "11:40:56 pm",
+      "type": "text",
+      "url": null,
+      "fileName": "test_internship.pdf",
+      "userEmail": "shagun@test.com",
+      "verdict": "suspicious",
+      "score": 60
+    }
+  ],
+  "reports": [
+    {
+      "id": "1783061037716",
+      "url": null,
+      "companyName": null,
+      "description": "asking for money",
+      "reporterEmail": "admin@inplasheild.com",
+      "timestamp": 1783061037716,
+      "date": "3/7/2026",
+      "time": "12:13:57 pm"
     }
   ]
 }
